@@ -2,12 +2,14 @@
 #include<vector>
 #include <iterator>
 #include<set>
+#include<map>
 //#include "event.h"
 #include "user.h"
 using namespace std;
 
 int main(){
 	set<user*> userList;
+	map<string,string> m;
 	int i=1;
 	while(1){
 		cout<<"Enter you choice"<<endl;
@@ -22,11 +24,8 @@ int main(){
 	    	cin>>username;
 	    	cout<<"Enter your password"<<endl;
 	    	cin>>password;
-	    	cout<<"Enter your unique id"<<endl;
-	    	int tempI;
-	    	cin>>tempI;
-	    	user *temp=new user(username,password,tempI);
-	    	if(userList.find(temp)!=userList.end()){
+	    	string testPass=m[username];
+	    	if(password==testPass){
 	    		cout<<"Welcome "<<username<<endl;
 	    	}
 	    	else{
@@ -44,6 +43,7 @@ int main(){
 	    		cout<<"The new user is created"<<endl;
 	    		cout<<"Your unique userId is "<<i<<endl;
 	    		userList.insert(newUser);
+	    		m[username]=password;
 	    		i++;
 	    	}
 	    	else{
