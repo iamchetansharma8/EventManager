@@ -38,16 +38,14 @@ int main(){
 	    	cin>>username;
 	    	cout<<"Enter your password"<<endl;
 	    	cin>>password;
-	    	user *newUser=new user(username,password,i);
-	    	if(userList.find(newUser)==userList.end()){
-	    		cout<<"The new user is created"<<endl;
-	    		cout<<"Your unique userId is "<<i<<endl;
+	    	if(m.find(username)==m.end()){
+	    		user *newUser=new user(username,password,i);
+	    		i++;
 	    		userList.insert(newUser);
 	    		m[username]=password;
-	    		i++;
+	    		cout<<"The new user is created"<<endl;
 	    	}
 	    	else{
-	    		delete newUser;
 	    		cout<<"Select a different username and password"<<endl;
 	    	}
 	    }
