@@ -7,8 +7,7 @@
 using namespace std;
 
 int main(){
-	set<string> userNameList;
-	set<user> userList;
+	set<user*> userList;
 	int i=1;
 	while(1){
 		cout<<"Enter you choice"<<endl;
@@ -23,7 +22,11 @@ int main(){
 	    	cin>>username;
 	    	cout<<"Enter your password"<<endl;
 	    	cin>>password;
-	    	if(userNameList.find(username)!=userNameList.end()){
+	    	cout<<"Enter your unique id"<<endl;
+	    	int tempI;
+	    	cin>>tempI;
+	    	user *temp=new user(username,password,tempI);
+	    	if(userList.find(temp)!=userList.end()){
 	    		cout<<"Welcome "<<username<<endl;
 	    	}
 	    	else{
@@ -36,13 +39,15 @@ int main(){
 	    	cin>>username;
 	    	cout<<"Enter your password"<<endl;
 	    	cin>>password;
-	    	user newUser(username,password,i);
-	    	if(userList.find(username)==userList.end()){
+	    	user *newUser=new user(username,password,i);
+	    	if(userList.find(newUser)==userList.end()){
 	    		cout<<"The new user is created"<<endl;
+	    		cout<<"Your unique userId is "<<i<<endl;
 	    		userList.insert(newUser);
 	    		i++;
 	    	}
 	    	else{
+	    		delete newUser;
 	    		cout<<"Select a different username and password"<<endl;
 	    	}
 	    }

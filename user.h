@@ -16,6 +16,6 @@ public:
 		this->id=id;
 	}
 	bool operator<(const user& t) const{
-		return this->id<t.id;
+		return this->id < t.id;
 	}
 };
