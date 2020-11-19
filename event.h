@@ -1,9 +1,13 @@
 #include<iostream>
 #include<string>
-#include<map>
+#include<set>
 using namespace std;
 class event{
-public:
 	string eventName;
 	int capacity;
+public:
+	event(string eventName,int capacity){
+		this->eventName=eventName;
+		this->capacity=capacity;
+	}
 };
