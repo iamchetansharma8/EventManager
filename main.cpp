@@ -8,10 +8,37 @@
 #define pb push_back
 using namespace std;
 
-int main(){
+void chatFunction(string eventName,string userName,map<string,vector<string>> &eventsInvitedTo,map<string,vector<string>> &chat){
+	for(int i=0;i<eventsInvitedTo[userName].size();i++){
+		if(eventsInvitedTo[userName][i]==eventName){
+			while(1){
+			cout<<"Enter your message"<<endl;
+			string curChat;
+			cin.ignore();
+			getline(cin,curChat);
+			curChat=userName+" : "+curChat;
+			chat[eventName].pb(curChat);
+			for(int i=0;i<chat[eventName].size();i++){
+				cout<<chat[eventName][i]<<endl;
+			}
+			cout<<"Enter '1' to enter a new message"<<endl;
+			cout<<"Enter '2' to exit the chat section"<<endl;
+			int opt;
+			cin>>opt;
+			if(opt==1){
+				continue;
+			}
+			break;
+		}
+		}
+	}
+	cout<<"Sorry the event name you have entered doesn't match with any event in our list"<<endl;
+}
 
+int main(){
+	map<string,vector<string>> chat;
 	set<user*> userList;
-	map<string,string> m;
+	map<string,string> m;    //username,password
 	map<string,vector<string>> eventsInvitedTo;
 	int i=1;
 	while(1){
@@ -40,6 +67,20 @@ int main(){
 	    				cout<<eventsInvitedTo[username][i]<<","<<" ";
 	    			}
 	    			cout<<endl;
+	    			cout<<"Enter your choice"<<endl;
+	    			cout<<"Enter 1, if you want to enter the chat section of an event"<<endl;
+	    			cout<<"Enter 2, to exit"<<endl;
+	    			int option;
+	    			cin>>option;
+	    			if(option==1){
+	    				cout<<"Enter the name of the event whose chat section you want to enter"<<endl;
+	    				string curName;
+	    				cin>>curName;
+	    				chatFunction(curName,username,eventsInvitedTo,chat);
+	    			}
+	    			else if(option==2){
+	    				continue;
+	    			}
 	    		}
 	    		else if(choice==2){
 	    			cout<<"Enter the name of the event"<<endl;
