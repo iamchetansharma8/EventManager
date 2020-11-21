@@ -3,6 +3,7 @@
 #include <iterator>
 #include<set>
 #include<map>
+#include<fstream>
 //#include "event.h"
 #include "user.h"
 #define pb push_back
@@ -36,9 +37,12 @@ void chatFunction(string eventName,string userName,map<string,vector<string>> &e
 }
 
 int main(){
+	ifstream mObj;
+	mObj.open("Input.txt", ios::in);
+	map<string,string> m;    //username,password
+	mObj.read((char*)&m,sizeof(m));
 	map<string,vector<string>> chat;
 	set<user*> userList;
-	map<string,string> m;    //username,password
 	map<string,vector<string>> eventsInvitedTo;
 	int i=1;
 	while(1){
@@ -129,6 +133,9 @@ int main(){
 	    	else{
 	    		cout<<"Select a different username and password"<<endl;
 	    	}
+	    	ofstream mObj;
+	    	mObj.open("Input.txt",ios::app);
+	    	mObj.write((char*)&m, sizeof(m));
 	    }
 	    else{
 	    	return 0;
