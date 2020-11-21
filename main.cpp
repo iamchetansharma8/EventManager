@@ -3,11 +3,69 @@
 #include <iterator>
 #include<set>
 #include<map>
-#include<fstream>
+#include <cstring>
+#include <unistd.h>
 //#include "event.h"
 #include "user.h"
 #define pb push_back
 using namespace std;
+int WriteFile(string fname, map<string,string> *m)
+{
+	int count =1;
+	if (m->empty())
+        return 0;
+
+    FILE *fp = fopen(fname.c_str(), "w");
+    if (!fp)
+        return -errno;
+
+    for(std::map<std::string, std::string>::iterator it = m->begin(); it != m->end(); it++) {
+        fprintf(fp, "%s=%s\n", it->first.c_str(), it->second.c_str());
+    }
+
+    fclose(fp);
+	return count;
+}
+int ReadFile(string fname, map<string, string> *m) {
+        int count = 0;
+        if (access(fname.c_str(), R_OK) < 0)
+                return -errno;
+
+        FILE *fp = fopen(fname.c_str(), "r");
+        if (!fp)
+                return -errno;
+
+        m->clear();
+
+        char *buf = 0;
+        size_t buflen = 0;
+
+        while(getline(&buf, &buflen, fp) > 0) {
+                char *nl = strchr(buf, '\n');
+                if (nl == NULL)
+                        continue;
+                *nl = 0;
+
+                char *sep = strchr(buf, '=');
+                if (sep == NULL)
+                        continue;
+                *sep = 0;
+                sep++;
+
+                std::string s1 = buf;
+                std::string s2 = sep;
+
+                (*m)[s1] = s2;
+
+                count++;
+        }
+
+        if (buf)
+                free(buf);
+
+        fclose(fp);
+        return count;
+}
 
 void chatFunction(string eventName,string userName,map<string,vector<string>> &eventsInvitedTo,map<string,vector<string>> &chat){
 	for(int i=0;i<eventsInvitedTo[userName].size();i++){
@@ -37,13 +95,14 @@ void chatFunction(string eventName,string userName,map<string,vector<string>> &e
 }
 
 int main(){
-	ifstream mObj;
-	mObj.open("Input.txt", ios::in);
-	map<string,string> m;    //username,password
-	mObj.read((char*)&m,sizeof(m));
 	map<string,vector<string>> chat;
 	set<user*> userList;
+	map<string,string> m;    //username,password
+	string fname ="username list";
+	int d = ReadFile(fname, &m);
+	
 	map<string,vector<string>> eventsInvitedTo;
+
 	int i=1;
 	while(1){
 		cout<<"Enter you choice"<<endl;
@@ -129,17 +188,17 @@ int main(){
 	    		userList.insert(newUser);
 	    		m[username]=password;
 	    		cout<<"The new user is created"<<endl;
+				int c = WriteFile(fname, &m);
 	    	}
 	    	else{
 	    		cout<<"Select a different username and password"<<endl;
 	    	}
-	    	ofstream mObj;
-	    	mObj.open("Input.txt",ios::app);
-	    	mObj.write((char*)&m, sizeof(m));
 	    }
 	    else{
 	    	return 0;
 	    }
 	}
+	
+
 	return 0;
 }
