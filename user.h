@@ -1,11 +1,9 @@
 #include<iostream>
 #include<string>
-#include "event.h"
 #define pb push_back
 using namespace std;
 class user{
-	string username;
-	string password;
+	string username,password;
 	int id;
 	//set<event> eventList;
 public:
