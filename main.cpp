@@ -52,21 +52,22 @@ public:
 			}
 			break;
 		}
-			for(int i=0;i<chat.size();i++){
-				cout<<chat[i]<<endl;
-			}
+			this->showChat();
 		}
 		else{
 			cout<<"Sorry you are not invited to any such event"<<endl;
 		}
 	}
-	void addUser(string userName){
+	bool addUser(string userName){
 		if(total<strength){
 			invitedPeeps.insert(userName);
 			total++;
+			cout<<"User added"<<endl;
+			return true;
 		}
 		else{
 			cout<<"Sorry, no more people can be invited, seats are full "<<endl;
+			return false;
 		}
 	}
 	void showChat(){
@@ -132,33 +133,6 @@ int ReadFile(string fname, map<string, string> *m) {
         fclose(fp);
         return count;
 }
-/*void chatFunction(string eventName,string userName,map<string,vector<string>> &eventsInvitedTo,map<string,vector<string>> &chat){
-	for(int i=0;i<eventsInvitedTo[userName].size();i++){
-		if(eventsInvitedTo[userName][i]==eventName){
-			while(1){
-			cout<<"Enter your message"<<endl;
-			string curChat;
-			cin.ignore();
-			getline(cin,curChat);
-			curChat=userName+" : "+curChat;
-			chat[eventName].pb(curChat);
-			for(int i=0;i<chat[eventName].size();i++){
-				cout<<chat[eventName][i]<<endl;
-			}
-			cout<<"Enter '1' to enter a new message"<<endl;
-			cout<<"Enter '2' to exit the chat section"<<endl;
-			int opt;
-			cin>>opt;
-			if(opt==1){
-				continue;
-			}
-			break;
-		}
-		}
-	}
-	cout<<"Sorry the event name you have entered doesn't match with any event in our list"<<endl;
-}
-*/
 int main(){
 	//map<string,vector<string>> chat;
 	set<user*> userList;
@@ -190,6 +164,10 @@ int main(){
 	    		int choice;
 	    		cin>>choice;
 	    		if(choice==1){
+	    			if(eventsInvitedTo[username].size()==0){
+	    				cout<<"Currently you are not invited to any of the events"<<endl;
+	    				continue;
+	    			}
 	    			for(int i=0;i<eventsInvitedTo[username].size();i++){
 	    				cout<<eventsInvitedTo[username][i]<<","<<" ";
 	    			}
@@ -221,12 +199,12 @@ int main(){
 	    			string eventName;
 	    			cin>>eventName;
 	    			cout<<"Enter the date month and year on which the event is to be held"<<endl;
-	    			int d,m,y;
-	    			cin>>d>>m>>y;
+	    			int d,mo,y;
+	    			cin>>d>>mo>>y;
 	    			cout<<"Enter the number of people you wish to invite to the event"<<endl;
 	    			int strength;
 	    			cin>>strength;
-	    			event *e=new event(eventName,d,m,y,strength,username);
+	    			event *e=new event(eventName,d,mo,y,strength,username);
 	    			eventsInvitedTo[username].pb(eventName);
 	    			eventList[eventName]=e;
 	    			while(1){
@@ -239,9 +217,10 @@ int main(){
 	    					string name;
 	    					cin>>name;
 	    					if(m.find(name)!=m.end()){
-	    						e->addUser(name);
-	    						eventsInvitedTo[name].pb(eventName);
-	    						cout<<"User Invited"<<endl;
+	    						bool status=e->addUser(name);
+	    						if(status){
+	    							eventsInvitedTo[name].pb(eventName);
+	    						}
 	    					}
 	    					else{
 	    						cout<<"Enter valid name"<<endl;
@@ -262,7 +241,7 @@ int main(){
 	    	cin>>username;
 	    	cout<<"Enter your password"<<endl;
 	    	cin>>password;
-	    	if(1){
+	    	if(m.find(username)==m.end()){
 	    		user *newUser=new user(username,password,i);
 	    		i++;
 	    		userList.insert(newUser);
